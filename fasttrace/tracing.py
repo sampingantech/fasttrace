@@ -26,3 +26,17 @@ def instrument(name="request"):
         return wrapper
 
     return decorator
+
+
+def instrument_sync(name="request"):
+    def decorator(method):
+        @functools.wraps(method)
+        def wrapper(*args, **kwargs):
+            tracer = trace.get_tracer(__name__)
+            with tracer.start_as_current_span(name=name) as span:
+                response = method(*args, **kwargs)
+                return response
+
+        return wrapper
+
+    return decorator

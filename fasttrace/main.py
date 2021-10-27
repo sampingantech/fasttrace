@@ -73,7 +73,12 @@ async def read_root():
 
 @tracing.instrument("calling get_name")
 async def get_name():
-    return "sakti dwi cahyono"
+    return "your name"
+
+
+@tracing.instrument_sync("calling get_name_sync")
+def get_name_sync():
+    return "your name sync"
 
 
 @tracing.instrument("calling process csv file")
@@ -85,7 +90,8 @@ async def process_csv():
 async def name():
     for i in range(0, random.randint(1, 5)):
         name = await get_name()
-    return {"name": name}
+    name2 = get_name_sync()
+    return {"name": name, "name2": name2}
 
 
 @app.get("/hero")
